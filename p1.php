@@ -8,7 +8,7 @@ $p2[1]="VFhVdWpHU0p4Z2M5dzRXLVV6MndrNGhyRFdYWWNR";
 $p1[2]="AF1QipPb-oQKtgwg_x3cVSEWgwsJ_ddicNK2I0bSTmMTsh7CdNlTuGLy_wTrq3aOSuoSIg";
 $p2[2]="Z2F1SjV4dDJyTDFKempHcERDVWttbFI4YURhUTd3";
 
-$url="https://photos.google.com/share/$p1[$album]?key=$p2[$album]";
+$url="https://photos.google.com/share/".$p1[$album]."?key=".$p2[$album];
 $html=file_get_contents($url);
 file_put_contents("check.html",$html);
 $re='/<script nonce="[^"]+">AF_initDataCallback\(\{[^<]+, data:([^<]+)\}\);<\/script>/m';
@@ -19,7 +19,6 @@ $qq=$data[1];
 
 $i=1;
 foreach($qq as $v){
-break;
   echo $i." ".$v[0]."\n";
   $url="https://photos.google.com/share/$p1[$album]/photo/$v[0]?key=$p2[$album]";
   $html=file_get_contents($url);
