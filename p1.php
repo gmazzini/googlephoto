@@ -27,7 +27,6 @@ foreach($qq as $v){
   $myjpg=file_get_contents($v[1][0]);
   file_put_contents($title.".jpg",$myjpg);
   $i++;
-  if($i>3)break;
 }
 
 ?>
