@@ -15,13 +15,15 @@ $i=1;
 foreach($qq as $v){
 
   echo $i." ".$v[0]."\n";
+  $url="https://photos.google.com/share/$p1/photo/$v[0]?key=$p2";
+  $html=file_get_contents($url);
+  file_put_contents($i.".html",$html);
 
   echo $i." ".$v[1][0]."\n";
   $myjpg=file_get_contents($v[1][0]);
   file_put_contents($i.".jpg",$myjpg);
   $i++;
   if($i>3)break;
-
 }
 
 ?>
