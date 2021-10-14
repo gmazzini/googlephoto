@@ -1,6 +1,9 @@
 <?php 
 
-$url="https://photos.google.com/share/AF1QipO77HMMFpTErNkmUK5LuXMrSpDeR5O64nJOb2tx4ATc4fc-YoPSAeaXg_pxkDduiQ?key=VFhVdWpHU0p4Z2M5dzRXLVV6MndrNGhyRFdYWWNR";
+$p1="AF1QipO77HMMFpTErNkmUK5LuXMrSpDeR5O64nJOb2tx4ATc4fc-YoPSAeaXg_pxkDduiQ";
+$p2="VFhVdWpHU0p4Z2M5dzRXLVV6MndrNGhyRFdYWWNR";
+
+$url="https://photos.google.com/share/$p1?key=$p2";
 $html=file_get_contents($url);
 $re='/<script nonce="[^"]+">AF_initDataCallback\(\{[^<]+, data:([^<]+)\}\);<\/script>/m';
 preg_match_all($re,$html,$matches,PREG_SET_ORDER,0);
@@ -11,14 +14,13 @@ $qq=$data[1];
 $i=1;
 foreach($qq as $v){
 
-  echo $v[0]."\n";
+  echo $i." ".$v[0]."\n";
 
-  echo $v[1][0]."\n";
+  echo $i." ".$v[1][0]."\n";
   $myjpg=file_get_contents($v[1][0]);
   file_put_contents($i.".jpg",$myjpg);
   $i++;
   if($i>3)break;
-
 
 }
 
