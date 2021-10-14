@@ -1,4 +1,6 @@
-<?php 
+<?php
+// non eccedere le 250 photo per album
+
 $album=$argv[1];
 echo "Album: $album\n";
 
