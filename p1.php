@@ -5,6 +5,7 @@ $p2="VFhVdWpHU0p4Z2M5dzRXLVV6MndrNGhyRFdYWWNR";
 
 $url="https://photos.google.com/share/$p1?key=$p2";
 $html=file_get_contents($url);
+file_put_contents("check.html",$html);
 $re='/<script nonce="[^"]+">AF_initDataCallback\(\{[^<]+, data:([^<]+)\}\);<\/script>/m';
 preg_match_all($re,$html,$matches,PREG_SET_ORDER,0);
 $json=str_replace(', sideChannel: {}', '',$matches[0][1]);
@@ -13,7 +14,7 @@ $qq=$data[1];
 
 $i=1;
 foreach($qq as $v){
-
+break;
   echo $i." ".$v[0]."\n";
   $url="https://photos.google.com/share/$p1/photo/$v[0]?key=$p2";
   $html=file_get_contents($url);
