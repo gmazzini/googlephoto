@@ -25,9 +25,9 @@ foreach($qq as $v){
   
   echo $i." ".$v[1][0]."\n";
   $myjpg=file_get_contents($v[1][0]);
-  file_put_contents($i.".jpg",$myjpg);
+  file_put_contents($title.".jpg",$myjpg);
   $i++;
-  if($i>1)break;
+  if($i>3)break;
 }
 
 ?>
