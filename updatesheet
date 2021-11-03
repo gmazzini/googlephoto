@@ -10,7 +10,7 @@ for fff in gmspli*; do
   echo -n "[" > aux
   cat $fff | awk -F "," '{if(length($2)>10){if(NR>1)printf(",");printf("[\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"]",$1,$2,$3,$4,$6)}}' >> aux
   echo -n "]" >> aux
-  myphoto=`cat gmaux`
+  myphoto=`cat aux`
   glen=`wc -l $fff | awk '{print $1}'`
   gend=$((gstart+glen-1))
   
