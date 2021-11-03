@@ -41,8 +41,6 @@ $'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate'
 
 curl -s --request POST -L \
 --header "Authorization: Bearer $tok" \
-https://www.googleapis.com/drive/v2/files/$id/trash > aux3
-
-break
+https://www.googleapis.com/drive/v2/files/$id/trash
 
 done
