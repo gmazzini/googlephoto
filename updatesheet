@@ -1,3 +1,8 @@
+#!/bin/bash
+
+cd $HOME/Desktop/gmphoto
+tok=`cat token`
+
 rm gmplit*; split -l 100 gmphoto gmsplit
 gstart=1; for fff in gmspli*; do
 echo -n "[" > gmaux; cat $fff | awk -F "," '{if(length($2)>10){if(NR>1)printf(",");printf("[\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"]",$1,$2,$3,$4,$6)}}' >> gmaux; echo -n "]" >> gmaux
