@@ -1,0 +1,24 @@
+#!/bin/bash
+
+cd $HOME/Desktop/gmphoto
+
+tok=`cat token`
+
+curl -s --get \
+--header "Authorization: Bearer $tok" \
+$'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='$tok > aux
+
+expire=`cat aux | jq -r ".expires_in"`
+
+if [ $expire -le 1200 ]; then
+
+ref=`cat refresh`
+
+curl -s \
+--request POST \
+--data $'client_id=318828253431-bqnlfhchcdrc6gsfjs02u1ho593975pf.apps.googleusercontent.com&client_secret=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&refresh_token='$ref$'&grant_type=refresh_token' \
+https://accounts.google.com/o/oauth2/token > aux
+
+cat aux | grep access_token | awk -F"\"" '{print $4}' > token 
+
+fi
