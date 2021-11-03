@@ -1,0 +1,42 @@
+#!/bin/bash
+
+cd $HOME/Desktop/gmphoto
+
+curl -s --get \
+--header "Authorization: Bearer $tok" \
+$'https://www.googleapis.com/drive/v2/files/1v0xUSkF463wJ1STfVKcGtaV4VO2mz3td/children?maxResults=500&q=trashed%3Dfalse' > aux
+
+cat aux | jq -r ".items[].id" | while read -r id; do 
+
+wn="gm"$id.jpg
+
+echo $wn
+
+curl -s --get \
+--header "Authorization: Bearer $tok" \
+--output $wn \
+$'https://www.googleapis.com/drive/v3/files/'$id$'?alt=media'
+
+curl -s --get \
+--header "Authorization: Bearer $tok" \
+https://www.googleapis.com/drive/v2/files/$id > aux
+
+orgname=`cat aux | jq -r ".originalFilename"`
+
+curl -s --request POST -L \
+--header "Authorization: Bearer $tok" \
+--header "Content-type: application/octet-stream" \
+--header "X-Goog-Upload-Content-Type: image/jpeg" \
+--header "X-Goog-Upload-Protocol: raw" \
+--data-binary "@"$wn \
+"https://photoslibrary.googleapis.com/v1/uploads" > aux 
+
+uptoken=`cat aux`
+
+curl -s --request POST -L \
+--header "Authorization: Bearer $tok" \
+--header "Content-Type: application/json" \
+--data '{"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","newMediaItems":[{"description":"","simpleMediaItem":{"uploadToken":"'$vv'","fileName":"'$orgname'"}}]}' \
+$'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate'
+
+done
