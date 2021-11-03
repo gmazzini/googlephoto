@@ -5,7 +5,7 @@ tok=`cat token`
 
 curl -s --get \
 --header "Authorization: Bearer $tok" \
-$'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='$tok > aux
+$'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='$tok > aux9
 
-expire=`cat aux | jq -r ".expires_in"`
+expire=`cat aux9 | jq -r ".expires_in"`
 echo $expire
