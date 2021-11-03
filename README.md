@@ -1,5 +1,5 @@
 # googlephoto
 
-a gogole based system to create a labelled photo
+a google based system to create a labelled photo
 
-rm -rf googlephoto; git clone https://github.com/gmazzini/googlephoto
+rm -rf googlephoto; sleep 1; git clone https://github.com/gmazzini/googlephoto
