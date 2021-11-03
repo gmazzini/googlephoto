@@ -1,0 +1,9 @@
+#!/bin/bash
+
+curl -s \
+--request POST \
+--data "code=$xx&client_id=318828253431-bqnlfhchcdrc6gsfjs02u1ho593975pf.apps.googleusercontent.com&client_secret=$client_secret&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code" \
+https://accounts.google.com/o/oauth2/token > aux
+
+cat aux | grep access_token | awk -F"\"" '{print $4}' > token
+cat aux | grep refresh_token | awk -F"\"" '{print $4}' > refresh
