@@ -3,7 +3,7 @@
 cd $HOME/Desktop/gmphoto
 tok=`cat token`
 
-rm gmplit*
+rm gmspli*
 split -l 100 gmphoto gmsplit
 gstart=1
 for fff in gmspli*; do
