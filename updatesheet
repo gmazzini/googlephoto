@@ -1,0 +1,8 @@
+rm gmplit*; split -l 100 gmphoto gmsplit
+gstart=1; for fff in gmspli*; do
+echo -n "[" > gmaux; cat $fff | awk -F "," '{if(length($2)>10){if(NR>1)printf(",");printf("[\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"]",$1,$2,$3,$4,$6)}}' >> gmaux; echo -n "]" >> gmaux
+myphoto=`cat gmaux`; glen=`wc -l $fff | awk '{print $1}'`; gend=$((gstart+glen-1))
+curl --request PUT -L --header "Authorization: Bearer $tok" --header "Content-Type: application/json" --data '{"majorDimension":"ROWS","values":'$myphoto'}' $'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/data!A'$gstart$':E'$gend$'?valueInputOption=RAW'
+gstart=$((gend+1))
+done
+curl --request POST -L --header "Authorization: Bearer $tok" --header "Content-Type: application/json" --data '{"requests":[{"sortRange":{"range":{"sheetId":567133476,"startRowIndex":0,"startColumnIndex":0},"sortSpecs":[{"dataSourceColumnReference":{"name":"A"},"sortOrder":"ASCENDING"}]}}]}' "https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0:batchUpdate"
