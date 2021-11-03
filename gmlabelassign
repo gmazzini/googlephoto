@@ -1,0 +1,8 @@
+
+
+
+curl -s --get --header "Authorization: Bearer $tok" --data "majorDimension=ROWS" $'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:G' > gmaux1
+rm gmaux2; cat gmaux1 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx myx myx myx myx mycrea; do lmycrea=${#mycrea}; if ((lmycrea>10)); then ddd=`echo $mycrea | tr "TZ" " "`; mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"`; echo "$myid,$mys" >> gmaux2; fi; done
+rm gmaux3; cat gmphoto | while IFS=, read -r myid myx myx mycrea googleid myx; do lmyid=${#myid}; lmycrea=${#mycrea}; if ((lmyid<4 && lmycrea>10)); then ddd=`echo $mycrea | tr "TZ" " "`; mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"`; echo "$googleid,$mys" >> gmaux3; fi; done
+rm gmaux4; cat gmaux3 | while IFS=, read -r myid mys; do mm=100000000; myid2=""; cat gmaux2 | while IFS=, read -r myid1 mys1; do d=$((mys-mys1)); if ((d<0)); then d=$((-d)); fi; if ((d<mm)); then mm=$d; myid2=$myid1; fi; echo "mm=$mm;myid2=$myid2" > gmaux5; done; . gmaux5; echo "$myid,$myid2,$mm" >> gmaux4; done
+cat gmaux4 | while IFS=, read -r myid myl mys; do mylabel="MTS"$myl; curl -s -L --request PATCH --header "Authorization: Bearer $tok" --header "Content-Type: application/json" --data '{"description":"'$mylabel'"}' $'https://photoslibrary.googleapis.com/v1/mediaItems/'$myid'?updateMask=description'; sleep 10; done
