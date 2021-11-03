@@ -8,7 +8,7 @@ $'https://www.googleapis.com/drive/v2/files/1v0xUSkF463wJ1STfVKcGtaV4VO2mz3td/ch
 
 cat aux | jq -r ".items[].id" | while read -r id; do 
 
-wn="gm"$id.jpg
+wn="photo_"$id.jpg
 
 echo $wn
 
