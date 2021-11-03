@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd $HOME/Desktop/gmphoto
+
+tok=`cat token`
+
+curl -s --get \
+--header "Authorization: Bearer $tok" \
+$'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='$tok > aux
+
+expire=`cat aux | jq -r ".expires_in"`
+
+echo $expire
