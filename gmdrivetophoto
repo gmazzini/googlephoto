@@ -19,9 +19,9 @@ $'https://www.googleapis.com/drive/v3/files/'$id$'?alt=media'
 
 curl -s --get \
 --header "Authorization: Bearer $tok" \
-https://www.googleapis.com/drive/v2/files/$id > aux
+https://www.googleapis.com/drive/v2/files/$id > aux1
 
-orgname=`cat aux | jq -r ".originalFilename"`
+orgname=`cat aux1 | jq -r ".originalFilename"`
 
 curl -s --request POST -L \
 --header "Authorization: Bearer $tok" \
@@ -29,9 +29,9 @@ curl -s --request POST -L \
 --header "X-Goog-Upload-Content-Type: image/jpeg" \
 --header "X-Goog-Upload-Protocol: raw" \
 --data-binary "@"$wn \
-"https://photoslibrary.googleapis.com/v1/uploads" > aux 
+"https://photoslibrary.googleapis.com/v1/uploads" > aux2 
 
-uptoken=`cat aux`
+uptoken=`cat aux2`
 
 curl -s --request POST -L \
 --header "Authorization: Bearer $tok" \
