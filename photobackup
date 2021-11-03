@@ -1,32 +1,31 @@
 #!/bin/bash
 
+# takeout only of Google Photo only of Salemi Archivio
+# unzip on $HOME/Desktop/gmphoto
+
 cd $HOME/Desktop/gmphoto
-tok=`cat token`
+mypath="Takeout/Google Photos/Salemi Archivio"
+myrep="backup"
 
-rm aux3 
-
-cat gmphoto | while IFS=, read -r myid myx myx mycrea myx myx; do
-  lmyid=${#myid}
-  lmycrea=${#mycrea}
-  if ((lmyid>4 && lmycrea>10)); then
-    ddd=`echo $mycrea | tr "TZ" " "`
-    mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"`
-    echo "$myid,$mys" >> aux3
+mylast="";
+ls -r "$mypath/"*".jpg" |  while read fff; do
+  myname=`echo $fff | awk -F "/" '{print $4}'`
+  myorg="$myname"
+  echo $myname
+  mysec=`echo $myname | awk -F "." '{print $1"-edited."$2}'`
+  if [ -f "$mypath/$mysec" ]; then myname="$mysec"; fi
+  if [ "$myname" = "$mylast" ]; then 
+    continue
+  else
+    mydob=`echo $myorg | awk -F"[()]" '{print $2}'`
+    if ((mydob>0)); then
+      myxx=`echo $myorg | awk -F"[()]" '{print $1$3"("$2").json"}'`
+    else
+      myxx="$myorg.json"
+    fi
+    mytarget=`cat "$mypath/$myxx" | jq -r ".description"`
   fi
-done
-
-for fff in Salemi\ Archivio/*; do 
-  ddd=`identify -verbose "$fff" | grep "exif:DateTimeOriginal:" | awk '{print substr($2,1,4) "-" substr($2,6,2) "-" substr($2,9,2) " " $3}'`
-  mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"`
-  mm=100000000
-  myid2=""
-  cat aux3 | while IFS=, read -r myid1 mys1; do 
-    d=$((mys-mys1-7200))
-    if ((d<0)); then d=$((-d)); fi
-    if ((d<mm)); then mm=$d; myid2=$myid1; fi
-    echo "mm=$mm;myid2=$myid2" > aux5
-  done
-  . aux5
-  echo $mys $myid2 $mm $ddd
-  cp "$fff" "backup/"$myid2".jpg"
+  mylast="$myname"
+  cp "$mypath/$myname" "$myrep/$mytarget.jpg"  
+  echo ".."$mytarget
 done
