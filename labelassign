@@ -43,4 +43,14 @@ cat aux3 | while IFS=, read -r myid mys; do
 
 done
 
-# cat gmaux4 | while IFS=, read -r myid myl mys; do mylabel="MTS"$myl; curl -s -L --request PATCH --header "Authorization: Bearer $tok" --header "Content-Type: application/json" --data '{"description":"'$mylabel'"}' $'https://photoslibrary.googleapis.com/v1/mediaItems/'$myid'?updateMask=description'; sleep 10; done
+cat aux4 | while IFS=, read -r myid myl mys; do 
+  mylabel="MTS"$myl
+  
+  curl -s -L --request PATCH \
+  --header "Authorization: Bearer $tok" \
+  --header "Content-Type: application/json" \
+  --data '{"description":"'$mylabel'"}' \
+  $'https://photoslibrary.googleapis.com/v1/mediaItems/'$myid'?updateMask=description'
+  
+  sleep 5
+done
