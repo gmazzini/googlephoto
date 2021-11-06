@@ -1,11 +1,11 @@
 #!/bin/bash
 
 cd $HOME/Desktop/gmphoto
-tok=`cat token`
 rm gmphoto
 ptok=""
 
 for ((;;)) do
+  tok=`cat token`
 
   curl -s -L --request POST \
   --header "Authorization: Bearer $tok" \
