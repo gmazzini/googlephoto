@@ -43,7 +43,8 @@ cat aux3 | while IFS=, read -r myid mys; do
 
 done
 
-cat aux4 | while IFS=, read -r myid myl mys; do 
+cat aux4 | while IFS=, read -r myid myl mys; do
+  tok=`cat token`
   mylabel="MTS"$myl
   
   curl -s -L --request PATCH \
