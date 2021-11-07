@@ -2,6 +2,9 @@
 
 cd $HOME/Desktop/gmphoto
 
+mys=`date +%z`
+deltaZ=$((${mys:1:2}*3600))
+
 tok=`cat token`
 curl -s --get \
 --header "Authorization: Bearer $tok" \
@@ -40,9 +43,8 @@ cat aux1 | jq -r ".items[].id" | while read -r id; do
   
   orgname=`cat aux4 | jq -r ".originalFilename"`
   ddd=`cat aux4 | jq -r ".imageMediaMetadata.date"`
-  
-  
-  mys=`cat aux4 | jq -r ".xxxxxx"`
+  auxtime=`date -j -f "%Y:%m:%d %H:%M:%S " +%s "$ddd"`
+  mys=$((auxtime-deltaZ))
   
   mm=100000000
   mydesc=""
