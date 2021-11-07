@@ -1,28 +1,30 @@
 #!/bin/bash
 
 cd $HOME/Desktop/gmphoto
-tok=`cat token`
 
+tok=`cat token`
 curl -s --get \
 --header "Authorization: Bearer $tok" \
 $'https://www.googleapis.com/drive/v2/files/1v0xUSkF463wJ1STfVKcGtaV4VO2mz3td/children?maxResults=500&q=trashed%3Dfalse' > aux
 
 cat aux | jq -r ".items[].id" | while read -r id; do
-  tok=`cat token`
   wn="photo_"$id.jpg
   echo $wn
   
+  tok=`cat token`
   curl -s --get \
   --header "Authorization: Bearer $tok" \
   --output $wn \
   $'https://www.googleapis.com/drive/v3/files/'$id$'?alt=media'
   
+  tok=`cat token`
   curl -s --get \
   --header "Authorization: Bearer $tok" \
   https://www.googleapis.com/drive/v2/files/$id > aux1
   
   orgname=`cat aux1 | jq -r ".originalFilename"`
   
+  tok=`cat token`
   curl -s --request POST -L \
   --header "Authorization: Bearer $tok" \
   --header "Content-type: application/octet-stream" \
@@ -33,12 +35,14 @@ cat aux | jq -r ".items[].id" | while read -r id; do
   
   uptoken=`cat aux2`
   
+  tok=`cat token`
   curl -s --request POST -L \
   --header "Authorization: Bearer $tok" \
   --header "Content-Type: application/json" \
   --data '{"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","newMediaItems":[{"description":"","simpleMediaItem":{"uploadToken":"'$uptoken'","fileName":"'$orgname'"}}]}' \
   $'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate'
   
+  tok=`cat token`
   curl -s --request POST -L \
   --header "Authorization: Bearer $tok" \
   https://www.googleapis.com/drive/v2/files/$id/trash
