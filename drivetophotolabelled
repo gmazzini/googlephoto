@@ -42,7 +42,7 @@ cat aux1 | jq -r ".items[].id" | while read -r id; do
   https://www.googleapis.com/drive/v2/files/$id > aux4
   
   orgname=`cat aux4 | jq -r ".originalFilename"`
-  ddd=`cat aux4 | jq -r ".imageMediaMetadata.date"`
+  ddd=`exiftool $wn | grep "Create Date" | head -n 1 | cut -c 35-`
   auxtime=`date -j -f "%Y:%m:%d %H:%M:%S " +%s "$ddd"`
   mys=$((auxtime-deltaZ))
   
