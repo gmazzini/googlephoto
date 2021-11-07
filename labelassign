@@ -1,8 +1,8 @@
 #!/bin/bash
 
 cd $HOME/Desktop/gmphoto
-tok=`cat token`
 
+tok=`cat token`
 curl -s --get \
 --header "Authorization: Bearer $tok" \
 --data "majorDimension=ROWS" \
@@ -44,9 +44,9 @@ cat aux3 | while IFS=, read -r myid mys; do
 done
 
 cat aux4 | while IFS=, read -r myid myl mys; do
-  tok=`cat token`
   mylabel="MTS"$myl
   
+  tok=`cat token`
   curl -s -L --request PATCH \
   --header "Authorization: Bearer $tok" \
   --header "Content-Type: application/json" \
