@@ -1,44 +1,74 @@
 #!/bin/bash
 
 cd $HOME/Desktop/gmphoto
-tok=`cat token`
 
+tok=`cat token`
 curl -s --get \
 --header "Authorization: Bearer $tok" \
-$'https://www.googleapis.com/drive/v2/files/1v0xUSkF463wJ1STfVKcGtaV4VO2mz3td/children?maxResults=500&q=trashed%3Dfalse' > aux
+$'https://www.googleapis.com/drive/v2/files/1v0xUSkF463wJ1STfVKcGtaV4VO2mz3td/children?maxResults=500&q=trashed%3Dfalse' > aux1
 
-cat aux | jq -r ".items[].id" | while read -r id; do
-  tok=`cat token`
+tok=`cat token`
+curl -s --get \
+--header "Authorization: Bearer $tok" \
+--data "majorDimension=ROWS" \
+$'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:G' > aux2
+
+rm aux3
+cat aux2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx myx myx myx myx mycrea; do
+  lmycrea=${#mycrea}
+  if ((lmycrea>10)); then
+    ddd=`echo $mycrea | tr "TZ" " "`
+    mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"`; echo "$myid,$mys" >> aux3
+  fi 
+done
+
+cat aux1 | jq -r ".items[].id" | while read -r id; do
   wn="photo_"$id.jpg
   echo $wn
   
+  tok=`cat token`
   curl -s --get \
   --header "Authorization: Bearer $tok" \
   --output $wn \
   $'https://www.googleapis.com/drive/v3/files/'$id$'?alt=media'
   
+  tok=`cat token`
   curl -s --get \
   --header "Authorization: Bearer $tok" \
-  https://www.googleapis.com/drive/v2/files/$id > aux1
+  https://www.googleapis.com/drive/v2/files/$id > aux4
   
-  orgname=`cat aux1 | jq -r ".originalFilename"`
+  orgname=`cat aux4 | jq -r ".originalFilename"`
+  mys=`cat aux4 | jq -r ".xxxxxx"`
   
+  mm=100000000
+  mydesc=""
+  cat aux3 | while IFS=, read -r myid1 mys1; do 
+    d=$((mys-mys1))
+    if ((d<0)); then d=$((-d)); fi; 
+    if ((d<mm)); then mm=$d; myid2=$myid1; fi; 
+    echo "mydesc=$myid2" > aux6
+  done 
+  . aux6
+    
+  tok=`cat token`
   curl -s --request POST -L \
   --header "Authorization: Bearer $tok" \
   --header "Content-type: application/octet-stream" \
   --header "X-Goog-Upload-Content-Type: image/jpeg" \
   --header "X-Goog-Upload-Protocol: raw" \
   --data-binary "@"$wn \
-  "https://photoslibrary.googleapis.com/v1/uploads" > aux2
+  "https://photoslibrary.googleapis.com/v1/uploads" > aux5
   
-  uptoken=`cat aux2`
+  uptoken=`cat aux5`
   
+  tok=`cat token`
   curl -s --request POST -L \
   --header "Authorization: Bearer $tok" \
   --header "Content-Type: application/json" \
-  --data '{"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","newMediaItems":[{"description":"","simpleMediaItem":{"uploadToken":"'$uptoken'","fileName":"'$orgname'"}}]}' \
+  --data '{"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","newMediaItems":[{"description":"'$mydesc'","simpleMediaItem":{"uploadToken":"'$uptoken'","fileName":"'$orgname'"}}]}' \
   $'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate'
   
+  tok=`cat token`
   curl -s --request POST -L \
   --header "Authorization: Bearer $tok" \
   https://www.googleapis.com/drive/v2/files/$id/trash
