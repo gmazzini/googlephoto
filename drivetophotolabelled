@@ -3,7 +3,7 @@
 cd $HOME/Desktop/gmphoto
 
 mys=`date +%z`
-deltaZ=$((${mys:1:2}*3600))
+deltaZ=$((${mys:0:3}*3600))
 
 tok=`cat token`
 curl -s --get \
