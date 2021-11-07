@@ -52,9 +52,10 @@ cat aux1 | jq -r ".items[].id" | while read -r id; do
     d=$((mys-mys1))
     if ((d<0)); then d=$((-d)); fi; 
     if ((d<mm)); then mm=$d; myid2=$myid1; fi; 
-    echo "mydesc=MTS$myid2" > aux6
+    echo "mydesc=MTS$myid2;mm=$mm" > aux6
   done 
   . aux6
+  echo ">>> "$mydesc" "$mm
     
   tok=`cat token`
   curl -s --request POST -L \
