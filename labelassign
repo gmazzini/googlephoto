@@ -13,7 +13,8 @@ cat aux1 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx m
   lmycrea=${#mycrea}
   if ((lmycrea>10)); then
     ddd=`echo $mycrea | tr "TZ" " "`
-    mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"`; echo "$myid,$mys" >> aux2 
+    mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"`
+    echo "$myid,$mys" >> aux2 
   fi 
 done
 
