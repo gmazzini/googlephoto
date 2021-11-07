@@ -5,8 +5,8 @@ rm gmphoto
 ptok=""
 
 for ((;;)) do
-  tok=`cat token`
 
+  tok=`cat token`
   curl -s -L --request POST \
   --header "Authorization: Bearer $tok" \
   --header "Content-Type: application/json" \
