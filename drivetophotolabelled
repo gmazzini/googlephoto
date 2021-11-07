@@ -18,7 +18,8 @@ cat aux2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx m
   lmycrea=${#mycrea}
   if ((lmycrea>10)); then
     ddd=`echo $mycrea | tr "TZ" " "`
-    mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"`; echo "$myid,$mys" >> aux3
+    mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"` 
+    echo "$myid,$mys" >> aux3
   fi 
 done
 
@@ -38,6 +39,9 @@ cat aux1 | jq -r ".items[].id" | while read -r id; do
   https://www.googleapis.com/drive/v2/files/$id > aux4
   
   orgname=`cat aux4 | jq -r ".originalFilename"`
+  ddd=`cat aux4 | jq -r ".imageMediaMetadata.date"`
+  
+  
   mys=`cat aux4 | jq -r ".xxxxxx"`
   
   mm=100000000
