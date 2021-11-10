@@ -14,7 +14,7 @@ tok=`cat token`
 curl -s --get \
 --header "Authorization: Bearer $tok" \
 --data "majorDimension=ROWS" \
-$'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:G' > aux2
+$'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:G' > auxA2
 
 rm auxA3
 cat auxA2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx myx myx myx myx mycrea; do
