@@ -8,7 +8,7 @@ deltaZ=$((${mys:0:3}*3600))
 tok=`cat token`
 curl -s --get \
 --header "Authorization: Bearer $tok" \
-$'https://www.googleapis.com/drive/v2/files/1v0xUSkF463wJ1STfVKcGtaV4VO2mz3td/children?maxResults=500&q=trashed%3Dfalse' > aux1
+$'https://www.googleapis.com/drive/v2/files/1v0xUSkF463wJ1STfVKcGtaV4VO2mz3td/children?maxResults=500&q=trashed%3Dfalse' > auxA1
 
 tok=`cat token`
 curl -s --get \
@@ -16,17 +16,17 @@ curl -s --get \
 --data "majorDimension=ROWS" \
 $'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:G' > aux2
 
-rm aux3
-cat aux2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx myx myx myx myx mycrea; do
+rm auxA3
+cat auxA2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx myx myx myx myx mycrea; do
   lmycrea=${#mycrea}
   if ((lmycrea>10)); then
     ddd=`echo $mycrea | tr "TZ" " "`
     mys=`date -j -f "%Y-%m-%d %H:%M:%S " +%s "$ddd"` 
-    echo "$myid,$mys" >> aux3
+    echo "$myid,$mys" >> auxA3
   fi 
 done
 
-cat aux1 | jq -r ".items[].id" | while read -r id; do
+cat auxA1 | jq -r ".items[].id" | while read -r id; do
   wn="photo_"$id.jpg
   echo $wn
   
@@ -39,22 +39,22 @@ cat aux1 | jq -r ".items[].id" | while read -r id; do
   tok=`cat token`
   curl -s --get \
   --header "Authorization: Bearer $tok" \
-  https://www.googleapis.com/drive/v2/files/$id > aux4
+  https://www.googleapis.com/drive/v2/files/$id > auxA4
   
-  orgname=`cat aux4 | jq -r ".originalFilename"`
+  orgname=`cat auxA4 | jq -r ".originalFilename"`
   ddd=`exiftool $wn | grep "Create Date" | head -n 1 | cut -c 35-`
   auxtime=`date -j -f "%Y:%m:%d %H:%M:%S " +%s "$ddd"`
   mys=$((auxtime-deltaZ))
   
   mm=100000000
   mydesc=""
-  cat aux3 | while IFS=, read -r myid1 mys1; do 
+  cat auxA3 | while IFS=, read -r myid1 mys1; do 
     d=$((mys-mys1))
     if ((d<0)); then d=$((-d)); fi; 
     if ((d<mm)); then mm=$d; myid2=$myid1; fi; 
-    echo "mydesc='MTS$myid2';mm=$mm" > aux6
+    echo "mydesc='MTS$myid2';mm=$mm" > auxA6
   done 
-  . aux6
+  . auxA6
   echo ">>> "$mydesc" "$mm
     
   tok=`cat token`
@@ -64,9 +64,9 @@ cat aux1 | jq -r ".items[].id" | while read -r id; do
   --header "X-Goog-Upload-Content-Type: image/jpeg" \
   --header "X-Goog-Upload-Protocol: raw" \
   --data-binary "@"$wn \
-  "https://photoslibrary.googleapis.com/v1/uploads" > aux5
+  "https://photoslibrary.googleapis.com/v1/uploads" > auxA5
   
-  uptoken=`cat aux5`
+  uptoken=`cat auxA5`
   
   tok=`cat token`
   curl -s --request POST -L \
