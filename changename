@@ -14,6 +14,6 @@ for ((;;)) do
   https://photoslibrary.googleapis.com/v1/mediaItems:search > aux1
   
   cat aux1 | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> gmphoto
-  ptok=`cat aux | jq -r ".nextPageToken"`
+  ptok=`cat aux1 | jq -r ".nextPageToken"`
   if [ ${#ptok} -le 5 ]; then break; fi
 done
