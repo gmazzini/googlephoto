@@ -28,3 +28,12 @@ rm auxB3
 cat auxB2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx mytitle myxx myyy mydest; do
   echo "MTS"$myid" - "$mytitle" - "$myxx"x"$myyy" - "$mydest >> auxB3
 done
+
+cat gmphoto | while IFS=, read -r myid myx myx myx googleid myx; do
+  lmyid=${#myid}
+  if ((lmyid==7)); then
+    myll=`grep $myid auxB3`
+  echo $myll
+  fi
+  break;
+done
