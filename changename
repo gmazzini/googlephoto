@@ -11,9 +11,15 @@ for ((;;)) do
   --header "Authorization: Bearer $tok" \
   --header "Content-Type: application/json" \
   --data '{"pageSize":50,"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","pageToken":"'$ptok'"}' \
-  https://photoslibrary.googleapis.com/v1/mediaItems:search > aux1
+  https://photoslibrary.googleapis.com/v1/mediaItems:search > auxB1
   
-  cat aux1 | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> gmphoto
-  ptok=`cat aux1 | jq -r ".nextPageToken"`
+  cat auxB1 | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> gmphoto
+  ptok=`cat auxB1 | jq -r ".nextPageToken"`
   if [ ${#ptok} -le 5 ]; then break; fi
 done
+
+tok=`cat token`
+curl -s --get \
+--header "Authorization: Bearer $tok" \
+--data "majorDimension=ROWS" \
+$'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:F' > auxB2
