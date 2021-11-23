@@ -41,7 +41,7 @@ tail -r gmphoto | while IFS=, read -r myid myx myx myx googleid myx; do
     --header "Content-Type: application/json" \
     --data "{\"description\":\"$mylabel\"}" \
     "https://photoslibrary.googleapis.com/v1/mediaItems/$googleid?updateMask=description"
-
+    
+    sleep 3
   fi
-  sleep 3
 done
