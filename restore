@@ -29,6 +29,30 @@ cat auxB2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx 
   mycheck=`grep $mylabel gmphoto`
   lmycheck=${#mycheck}
   if ((lmycheck<7)); then
-    echo $mylabel
+  
+    orgname=$mylabel".jpg"
+    wn="backup/"$orgname
+    if [[ -f "$wn" ]]; then
+    
+      tok=`cat token`
+      curl -s --request POST -L \
+      --header "Authorization: Bearer $tok" \
+      --header "Content-type: application/octet-stream" \
+      --header "X-Goog-Upload-Content-Type: image/jpeg" \
+      --header "X-Goog-Upload-Protocol: raw" \
+      --data-binary "@"$wn \
+      "https://photoslibrary.googleapis.com/v1/uploads" > auxB3
+    
+      uptoken=`cat auxB3`
+      tok=`cat token`
+      curl -s --request POST -L \
+      --header "Authorization: Bearer $tok" \
+      --header "Content-Type: application/json" \
+      --data '{"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","newMediaItems":[{"description":"'$mylabel'","simpleMediaItem":{"uploadToken":"'$uptoken'","fileName":"'$orgname'"}}]}' \
+      $'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate'
+    
+    else 
+      echo "Missed "$mylabel
+    fi
   fi
 done
