@@ -34,6 +34,7 @@ tail -r gmphoto | while IFS=, read -r myid myx myx myx googleid myx; do
   lmyid=${#myid}
   if ((lmyid==7)); then
     mylabel=`grep $myid auxB3`
+    echo $mylabel
 
     tok=`cat token`        
     curl -s -L --request PATCH \
