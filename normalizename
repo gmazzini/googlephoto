@@ -13,7 +13,7 @@ for ((;;)) do
   --data '{"pageSize":50,"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","pageToken":"'$ptok'"}' \
   "https://photoslibrary.googleapis.com/v1/mediaItems:search" > auxB1
   
-  cat auxB1 | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> gmphoto1
+  cat auxB1 | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> gmphotoB
   ptok=`cat auxB1 | jq -r ".nextPageToken"`
   if [ ${#ptok} -le 5 ]; then break; fi
 done
@@ -30,7 +30,7 @@ cat auxB2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx 
   echo "MTS"$myid" - "$mytitle" - "$myxx"x"$myyy" - "$mydest >> auxB3
 done
 
-cat gmphoto1 | while IFS=, read -r myid myx myx myx googleid myx; do
+cat gmphotoB | while IFS=, read -r myid myx myx myx googleid myx; do
   lmyid=${#myid}
   if ((lmyid==7)); then
     mylabel=`grep $myid auxB3`
