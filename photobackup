@@ -26,6 +26,7 @@ ls -r "$mypath/"*".jpg" |  while read fff; do
     mytarget=`cat "$mypath/$myxx" | jq -r ".description"`
   fi
   mylast="$myname"
+  mytarget=${mytarget:0:7}
   cp "$mypath/$myname" "$myrep/$mytarget.jpg"  
   echo ".."$mytarget
 done
