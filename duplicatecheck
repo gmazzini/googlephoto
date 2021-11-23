@@ -1,0 +1,21 @@
+#!/bin/bash
+
+cd $HOME/Desktop/gmphoto
+
+rm gmphotoD
+ptok=""
+for ((;;)) do
+
+  tok=`cat token`
+  curl -s -L --request POST \
+  --header "Authorization: Bearer $tok" \
+  --header "Content-Type: application/json" \
+  --data '{"pageSize":50,"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","pageToken":"'$ptok'"}' \
+  "https://photoslibrary.googleapis.com/v1/mediaItems:search" > auxD1
+  
+  cat auxD1 | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> gmphotoD
+  ptok=`cat auxD1 | jq -r ".nextPageToken"`
+  if [ ${#ptok} -le 5 ]; then break; fi
+done
+
+cat gmphotoB | awk -F',' '{print substr($1,1,7)}' | sort | uniq -c | grep -v '^ *1 '
