@@ -28,7 +28,9 @@ cat auxB2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx 
   mylabel="MTS"$myid
   mycheck=`grep $mylabel gmphoto`
   lmycheck=${#mycheck}
-  echo $mylabel" "$lmycheck
+  if ((lmyid<7)); then
+    echo $mylabel
+  fi
 done
 
 exit
