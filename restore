@@ -2,7 +2,7 @@
 
 cd $HOME/Desktop/gmphoto
 
-rm gmphoto
+rm gmphotoC
 ptok=""
 for ((;;)) do
 
@@ -11,10 +11,10 @@ for ((;;)) do
   --header "Authorization: Bearer $tok" \
   --header "Content-Type: application/json" \
   --data '{"pageSize":50,"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","pageToken":"'$ptok'"}' \
-  "https://photoslibrary.googleapis.com/v1/mediaItems:search" > auxB1
+  "https://photoslibrary.googleapis.com/v1/mediaItems:search" > auxC1
   
-  cat auxB1 | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> gmphoto
-  ptok=`cat auxB1 | jq -r ".nextPageToken"`
+  cat auxC1 | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> gmphotoC
+  ptok=`cat auxC1 | jq -r ".nextPageToken"`
   if [ ${#ptok} -le 5 ]; then break; fi
 done
 
@@ -22,11 +22,11 @@ tok=`cat token`
 curl -s --get \
 --header "Authorization: Bearer $tok" \
 --data "majorDimension=ROWS" \
-$'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:F' > auxB2
+$'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:F' > auxC2
 
-cat auxB2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx mytitle myxx myyy mydest; do
+cat auxC2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx mytitle myxx myyy mydest; do
   mylabel="MTS"$myid
-  mycheck=`grep $mylabel gmphoto`
+  mycheck=`grep $mylabel gmphotoC`
   lmycheck=${#mycheck}
   if ((lmycheck<7)); then
   
@@ -41,16 +41,17 @@ cat auxB2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx 
       --header "X-Goog-Upload-Content-Type: image/jpeg" \
       --header "X-Goog-Upload-Protocol: raw" \
       --data-binary "@"$wn \
-      "https://photoslibrary.googleapis.com/v1/uploads" > auxB3
+      "https://photoslibrary.googleapis.com/v1/uploads" > auxC3
     
-      uptoken=`cat auxB3`
+      uptoken=`cat auxC3`
       tok=`cat token`
       curl -s --request POST -L \
       --header "Authorization: Bearer $tok" \
       --header "Content-Type: application/json" \
       --data '{"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","newMediaItems":[{"description":"'$mylabel'","simpleMediaItem":{"uploadToken":"'$uptoken'","fileName":"'$orgname'"}}]}' \
       $'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate'
-    
+      
+      sleep 3
     else 
       echo "Missed "$mylabel
     fi
