@@ -18,13 +18,13 @@ for ((;;)) do
   if [ ${#ptok} -le 5 ]; then break; fi
 done
 
-exit
-
 tok=`cat token`
 curl -s --get \
 --header "Authorization: Bearer $tok" \
 --data "majorDimension=ROWS" \
 $'https://sheets.googleapis.com/v4/spreadsheets/1llfQf5gKJWKQ2v26qQWLik-P74F1QI2cu2iopM0uhC0/values/Quadri!A2:F' > auxB2
+
+exit
 
 rm auxB3
 cat auxB2 | jq -r ".values[] | @csv" | tr -d '"' | while IFS=, read -r myid myx mytitle myxx myyy mydest; do
