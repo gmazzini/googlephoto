@@ -35,8 +35,8 @@ cat aux3 | while IFS=, read -r myid mys; do
   myid2=""
   cat aux2 | while IFS=, read -r myid1 mys1; do 
     d=$((mys-mys1))
-    if ((d<0)); then d=$((-d)); fi; 
-    if ((d<mm)); then mm=$d; myid2=$myid1; fi; 
+    if ((d<0)); then d=$((-d)); fi
+    if ((d<mm)); then mm=$d; myid2=$myid1; fi
     echo "mm=$mm;myid2=$myid2" > aux5
   done 
   . aux5 
