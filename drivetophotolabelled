@@ -50,8 +50,8 @@ cat auxA1 | jq -r ".items[].id" | while read -r id; do
   mydesc=""
   cat auxA3 | while IFS=, read -r myid1 mys1; do 
     d=$((mys-mys1))
-    if ((d<0)); then d=$((-d)); fi; 
-    if ((d<mm)); then mm=$d; myid2=$myid1; fi; 
+    if ((d<0)); then d=$((-d)); fi
+    if ((d<mm)); then mm=$d; myid2=$myid1; fi
     echo "mydesc='MTS$myid2';mm=$mm" > auxA6
   done 
   . auxA6
