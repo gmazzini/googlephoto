@@ -7,7 +7,7 @@ split -l 100 gmphoto gmsplit
 gstart=1
 for fff in gmspli*; do
   echo -n "[" > aux
-  cat $fff | awk -F "," '{if(length($2)>10){if(NR>1)printf(",");printf("[\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"]",$1,$2,$3,$4,$6)}}' >> aux
+  cat $fff | awk -F "," '{if(length($2)>10){if(NR>1)printf(",");printf("[\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"]",substr($1,1,7),$2,$3,$4,$6)}}' >> aux
   echo -n "]" >> aux
   myphoto=`cat aux`
   glen=`wc -l $fff | awk '{print $1}'`
