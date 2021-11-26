@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd $HOME/Desktop/gmphoto
+rm photo_*
+rm gmsplit*
+rm aux*
+rm gmphoto*
