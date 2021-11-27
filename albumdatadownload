@@ -6,6 +6,7 @@ if [ -n "$1" ]; then myout="gmphoto"$1; else myout="gmphoto"; fi
 rm $myout
 ptok=""
 ndd=0
+myaux="aux"$RANDOM$RANDOM
 for ((;;)) do
 
   tok=`cat token`
@@ -13,12 +14,12 @@ for ((;;)) do
   --header "Authorization: Bearer $tok" \
   --header "Content-Type: application/json" \
   --data '{"pageSize":50,"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","pageToken":"'$ptok'"}' \
-  https://photoslibrary.googleapis.com/v1/mediaItems:search > aux
+  https://photoslibrary.googleapis.com/v1/mediaItems:search > $myaux
   
-  ndl=`wc -l aux | awk '{print $1}'`
+  ndl=`wc -l $myaux | awk '{print $1}'`
   ndd=$((ndd+ndl))
-  cat aux | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> $myout
-  ptok=`cat aux | jq -r ".nextPageToken"`
+  cat $myaux | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> $myout
+  ptok=`cat $myaux | jq -r ".nextPageToken"`
   echo $ndd
   if [ ${#ptok} -le 5 ]; then break; fi
 done
