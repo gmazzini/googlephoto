@@ -6,7 +6,7 @@ if [ -n "$1" ]; then myout="gmphoto"$1; else myout="gmphoto"; fi
 rm $myout
 ptok=""
 ndd=0
-myaux="aux"$RANDOM$RANDOM
+myaux="aux."$RANDOM"."$RANDOM
 for ((;;)) do
 
   tok=`cat token`
@@ -18,7 +18,7 @@ for ((;;)) do
   
   break
   
-  ndl=`cat $myaux | grep mediaItems | wc -l | awk '{print $1}'`
+  ndl=`cat $myaux | grep baseUrl | wc -l | awk '{print $1}'`
   ndd=$((ndd+ndl))
   cat $myaux | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> $myout
   ptok=`cat $myaux | jq -r ".nextPageToken"`
