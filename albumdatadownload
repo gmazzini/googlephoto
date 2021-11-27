@@ -16,6 +16,8 @@ for ((;;)) do
   --data '{"pageSize":50,"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","pageToken":"'$ptok'"}' \
   https://photoslibrary.googleapis.com/v1/mediaItems:search > $myaux
   
+  break
+  
   ndl=`cat $myaux | grep mediaItems | wc -l | awk '{print $1}'`
   ndd=$((ndd+ndl))
   cat $myaux | jq -r ".mediaItems[] | [.description,.productUrl,.baseUrl,.mediaMetadata.creationTime,.id,.filename] | @csv" | tr -d '"' >> $myout
