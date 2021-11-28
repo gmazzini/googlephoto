@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd $HOME/Desktop/gmphoto
+
+. googlephoto/albumdatadownload D
+cat gmphotoD | awk '{print $1".jpg"}' > aux30
+myend=`tail -n 1 aux30 | awk '{print substr($1,4,4)}'`
+seq -f MTS%04g.jpg 1 $myend > aux31
+diff aux30 aux31
