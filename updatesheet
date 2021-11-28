@@ -4,10 +4,10 @@ cd $HOME/Desktop/gmphoto
 if [ -n "$1" ]; then mystart=$1; else mystart=1; fi
 echo "mystart=$mystart" > aux50
 
-. googlephoto/albumdatadownload
+. googlephoto/albumdatadownload G
 . aux50
 
-tail -n +$mystart gmphoto > gmphotoE
+tail -n +$mystart gmphotoG > gmphotoE
 rm gmspli*
 split -l 200 gmphotoE gmsplit
 gstart=$mystart
