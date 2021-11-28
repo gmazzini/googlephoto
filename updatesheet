@@ -1,12 +1,14 @@
 #!/bin/bash
 
 cd $HOME/Desktop/gmphoto
+if [ -n "$1" ]; then mystart=$1; else mystart=1; fi
 
-. googlephoto/albumdatadownload
+# . googlephoto/albumdatadownload
 
+tail -n +$mystart gmphoto > gmphotoE
 rm gmspli*
-split -l 200 gmphoto gmsplit
-gstart=1
+split -l 200 gmphotoE gmsplit
+gstart=$mystart
 for fff in gmspli*; do
   echo -n "[" > aux
   cat $fff | awk -F "," '{if(length($2)>10){if(NR>1)printf(",");printf("[\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"]",substr($1,1,7),$2,$3,$4,$6)}}' >> aux
