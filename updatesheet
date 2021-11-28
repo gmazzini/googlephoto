@@ -1,10 +1,12 @@
 #!/bin/bash
 
 cd $HOME/Desktop/gmphoto
+if [ -n "$1" ]; then mystart=$1; else mystart=1; fi
+echo "mystart=$mystart" > aux50
 
 . googlephoto/albumdatadownload
+. aux50
 
-if [ -n "$1" ]; then mystart=$1; else mystart=1; fi
 tail -n +$mystart gmphoto > gmphotoE
 rm gmspli*
 split -l 200 gmphotoE gmsplit
