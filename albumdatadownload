@@ -24,4 +24,4 @@ for ((;;)) do
   if [ ${#ptok} -le 5 ]; then break; fi
 done
 
-sort -k1,7 $myout
+sort -k1,7 -o $myout $myout
