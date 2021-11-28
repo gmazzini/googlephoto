@@ -23,3 +23,5 @@ for ((;;)) do
   echo $ndd
   if [ ${#ptok} -le 5 ]; then break; fi
 done
+
+sort -k1,7 $myout
