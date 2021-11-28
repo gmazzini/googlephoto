@@ -3,6 +3,7 @@
 cd $HOME/Desktop/gmphoto
 
 . googlephoto/albumdatadownload
+
 rm gmspli*
 split -l 200 gmphoto gmsplit
 gstart=1
