@@ -4,7 +4,7 @@ cd $HOME/Desktop/gmphoto
 
 . googlephoto/albumdatadownload
 rm gmspli*
-split -l 500 gmphoto gmsplit
+split -l 200 gmphoto gmsplit
 gstart=1
 for fff in gmspli*; do
   echo -n "[" > aux
