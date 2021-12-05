@@ -8,9 +8,9 @@ if [ -n "$2" ]; then mydate=$2; else mydate=`date "+%Y%m%d"`; fi
 rm $myout
 ptok=""
 ndd=0
-zy=${mydate:0:4}
-zm=${mydate:4:2}
-zd=${mydate:6:2};
+zy=$((${mydate:0:4}))
+zm=$((${mydate:4:2}))
+zd=$((${mydate:6:2}))
 myaux="aux."$RANDOM"."$RANDOM
 for ((;;)) do
   
