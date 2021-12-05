@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm -rf googlephoto; sleep 1; git clone https://github.com/gmazzini/googlephoto
