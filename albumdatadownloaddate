@@ -14,7 +14,7 @@ for ((;;)) do
   curl -s -L --request POST \
   --header "Authorization: Bearer $tok" \
   --header "Content-Type: application/json" \
-  --data '{"pageSize":100,"filters":{"dataFilter":{"dates":[{"year":2021,"month":12,"day":4}]}}","albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","pageToken":"'$ptok'"}' \
+  --data '{"pageSize":100,"filters":{"dataFilter":{"dates":[{"year":2021,"month":12,"day":4}]}},"albumId":"AAe248ZKwc1oAs9V4kqTd4dXz-cdvEj8IYEZ3V-r1ZBKjxSQ9lfunPlEU6H2Y3KhTtswyRuo5NDa","pageToken":"'$ptok'"}' \
   https://photoslibrary.googleapis.com/v1/mediaItems:search > $myaux
     
   ndl=`cat $myaux | grep baseUrl | wc -l | awk '{print $1}'`
