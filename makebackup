@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd $HOME/Desktop/gmphoto
+myrep="backup"
+mycloud="/Users/gmazzini/quadrisalemi"
+
+ls -r "$myrep/"*".jpg" |  while read fff; do
+  myname=`echo $fff | awk -F "/" '{print $2}'`
+  if [ -f "$mycloud/$myname" ]; then echo "Missed"$myname; fi
+done
