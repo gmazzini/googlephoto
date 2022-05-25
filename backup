@@ -12,7 +12,7 @@ myrep="backup"
 
 mylast="";
 ls -r "$mypath/"*".jpg" |  while read fff; do
-  myname=`echo $fff | awk -F "/" '{print $4}'`
+  myname=`echo $fff | awk -F "/" '{print $2}'`
   myorg="$myname"
   echo $myname
   mysec=`echo $myname | awk -F "." '{print $1"-edited."$2}'`
