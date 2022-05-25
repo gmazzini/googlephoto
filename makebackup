@@ -6,5 +6,9 @@ mycloud="/Users/gmazzini/quadrisalemi"
 
 ls -r "$myrep/"*".jpg" |  while read fff; do
   myname=`echo $fff | awk -F "/" '{print $2}'`
-  if [ -f "$mycloud/$myname" ]; then echo "Missed"$myname; fi
+  echo $myname
+  if [ -f "$mycloud/$myname" ]; then 
+    cp "$myrep/$myname" "$mycloud/$myname"
+    echo "backuped"; 
+  fi
 done
