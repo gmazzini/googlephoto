@@ -3,12 +3,13 @@
 cd $HOME/Desktop/gmphoto
 myrep="backup"
 mycloud="/Users/gmazzini/quadrisalemi"
+ls $mycloud > auxJ4
 
 ls -r "$myrep/"*".jpg" |  while read fff; do
   myname=`echo $fff | awk -F "/" '{print $2}'`
   echo $myname
-  if [ ! -f "$mycloud/$myname" ]; then 
-    cp "$myrep/$myname" "$mycloud/$myname"
+  if grep -Fxq $myname auxJ4; then
+//    cp "$myrep/$myname" "$mycloud/$myname"
     echo "backuped"; 
   fi
 done
