@@ -8,7 +8,7 @@ ls $mycloud > auxJ4
 ls -r "$myrep/"*".jpg" |  while read fff; do
   myname=`echo $fff | awk -F "/" '{print $2}'`
   echo $myname
-  if grep -Fxq "$myname" auxJ4; then
+  if ! grep -Fxq "$myname" auxJ4; then
 #    cp "$myrep/$myname" "$mycloud/$myname"
     echo "backuped"; 
   fi
