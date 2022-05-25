@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# takeout only of Google Photo only of Salemi Archivio
-# unzip on $HOME/Desktop/gmphoto
-
 cd $HOME/Desktop/gmphoto
 mv "Takeout/Google Photos/Photos from 2021/"* "Takeout"
 mv "Takeout/Google Photos/Photos from 2022/"* "Takeout"
