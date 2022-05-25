@@ -7,8 +7,6 @@ cd $HOME/Desktop/gmphoto
 mv "Takeout/Google Photos/Photos from 2021/"* "Takeout"
 mv "Takeout/Google Photos/Photos from 2022/"* "Takeout"
 rm -rf "Takeout/Google Photos/"
-rm Takeout/*.mp4*
-rm Takeout/*.html
 mypath="Takeout"
 myrep="backup"
 
